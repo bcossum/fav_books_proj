@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>Book Site</title>
+</head>
+<body>
+  <div id="wrapper">
+    <div class='form'>
+      <h1>Registration</h1>
+
+      {% if messages %}
+      <ul class="messages">    
+        {% for message in messages %}    
+          <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <form action="/reg" method="POST">
+        {% csrf_token %}
+        <label for="first_name">First Name:</label>
+        <input type="text" name='first_name'>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" name='last_name'>
+
+        <label for="email">Email:</label>
+        <input type="text" name='email'>
+
+        <label for="password">Password:</label>
+        <input type="password" name='password'>
+
+        <label for="confirm">Confirm PW:</label>
+        <input type="password" name='confirm'>
+
+        <input type="submit" value="Register">
+      </form>
+    </div>
+
+    <div class="form">
+      <h1>Login</h1>
+      <form action="/login" method="POST">
+        {% csrf_token %}
+
+        <label for="email">Email</label>
+        <input type="text" name='email'>
+
+        <label for="password">Password</label>
+        <input type="password" name='password'>
+
+        <input type="submit" value="Log In">
+      </form>
+    </div>
+  </div>
+
+  {% for user in all_users %}
+    <ul>
+      <li>{{user.first_name}}</li>
+      <li>{{user.last_name}}</li>
+      <li>{{user.email}}</li>
+    </ul>
+  {% endfor %}
+</body>
+</html>

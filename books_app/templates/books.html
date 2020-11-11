@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>Books</title>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="header">
+      <h1>Welcome {{user.first_name}}</h1>
+      <a href="/logout">Log Out</a>
+    </div>
+
+    {% if messages %}
+      <ul class="messages">    
+        {% for message in messages %}    
+          <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <div .content>
+      
+      
+      <div class="form">
+        <h2>Add a Favorite Book</h2>
+        <form action="/add_book" method="POST">
+          {% csrf_token %}
+          <label for="title">Title:</label>
+          <input type="text" name="title">
+
+          <label for="desc">Description:</label>
+          <textarea name="desc" cols="30" rows="10"></textarea>
+
+          <input type="submit" value="Add">
+        </form>
+      </div>
+      
+      <div id="booklist">
+      <h2>All Books</h2>
+        {% for book in all_books %}
+          <a href="books/{{book.id}}">{{book.title}}</a>
+          <p>Added by: {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
+          {% if user in book.liked_by.all %}
+            <p>You have liked this book</p>
+            {% else %}
+              <a href="like/{{book.id}}">Like</a>
+          {% endif %}
+          <br>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
